@@ -1,0 +1,31 @@
+DONE
+    Google Auth
+    Add Course
+    Update Course
+    Delete Course
+
+    Add video in Course
+    Update video in Course
+    Delete vido in Course
+
+    Add quiz questions in Course
+    Update quiz questions in Course
+    Delete quiz questions in Course
+
+    Enroll students in Course
+    Assess the students score
+    Display the pending courses, completed courses and the courses under review on student portal
+    Student should be able to watch video and give quiz
+
+    Student wont be able to attend the quiz more than one time.
+    After video ends then it should not be displayed again
+    After faculty completes the assessment a mail will be sent to the student
+
+    Student does not have any control over the video
+
+
+TODO
+    Bug in checking answer of quiz
+    After watching all the videos a mail should be sent to the faculty
+    Give some proper designing
+    
