@@ -2,13 +2,25 @@
 session_start();
 require_once './Google_PHP_SDK/vendor/autoload.php';
 require_once './settings/connection.php';
-  
+
+  $host= gethostname();
+  $ip = gethostbyname($host);
+  //echo $ip;
+  $url =  "http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}";
+//  echo $url;
+
+  if(preg_match('/\blocalhost\b/', $url)){
+    $url = "http://$ip{$_SERVER['REQUEST_URI']}";
+    header("Location: ".$url);
+  }
+  //echo "<br>".$url;
 //marwadieducation.edu.in = faculty
 //marwadiuniversity.ac.in = student
 // init configuration
 $clientID = '828204760738-rig9899tml31j280g3drkra07a6btfnu.apps.googleusercontent.com';
 $clientSecret = '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';
 $redirectUri = 'http://localhost/MOOC%20Portal/redirect.php';
+//$redirectUri = "http://ictmooc.freecluster.eu/index.php";
    
 // create Client Request to access Google API
 $client = new Google_Client();
@@ -83,7 +95,18 @@ if (isset($_GET['code'])) {
 
   // now you can use this profile info to create account in your website and make user logged in.
 } else {
+  //
+  // if(!isset($_GET['ip'])){
+  //   //echo $ip;
+  //   echo "Location: http://ictmooc.freecluster.eu/getIp.php?ipaddr=$ip";
+    
+  //   header("Location: http://ictmooc.freecluster.eu/getIp.php?ipaddr=$ip");
+  // }
+  // else{
+    
+  //}
   header("Location: ".$client->createAuthUrl());
+  
 }
 
 function setStudentSession($email,$conn){

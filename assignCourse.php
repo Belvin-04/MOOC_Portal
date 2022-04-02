@@ -15,26 +15,28 @@
             $sql = "SELECT * FROM studentDetails ORDER BY studentGR";
                     $result = $conn->query($sql);
                     if($result->num_rows > 0){
-                        echo "<table border=1>";
-                        echo "<tr>";
-                                echo "<td>StudentId</td>";
-                                echo "<td>Student Name</td>";
-                                echo "<td>Student GR</td>";
-                                echo "<td>Student Email</td>";
-                                echo "<td>Operations</td>";
+                        echo "<table class='table'>";
+                        echo "<thead class='thead-dark'>";
+                        echo "<tr align='center'>";
+                                echo "<th>StudentId</th>";
+                                echo "<th>Student Name</th>";
+                                echo "<th>Student GR</th>";
+                                echo "<th>Student Email</th>";
+                                echo "<th>Operations</th>";
                         echo "</tr>";
+                        echo "</thead>";
                         while($row = $result->fetch_assoc()){
                             $sId = $row['studentId'];
                             $gr = $row['studentGR'];
                             $sName = $row['studentName'];
                             $sEmail = $row['studentEmail'];
                             $cId = $_GET['cid'];
-                            echo "<tr>";
+                            echo "<tr align='center'>";
                                 echo "<td>$sId</td>";
                                 echo "<td>$sName</td>";
                                 echo "<td>$gr</td>";
                                 echo "<td>$sEmail</td>";
-                                echo "<td><a href='./facultyHelper.php?sId=$sId&cId=$cId&assign=1'><button>Assign</button></a><a href='./facultyHelper.php'><button>Un-Assign</button></a></td>";
+                                echo "<td><a href='./facultyHelper.php?sId=$sId&cId=$cId&assign=1'><button class='btn btn-primary'>Assign</button></a> <a href='./facultyHelper.php'><button class='btn btn-warning'>Un-Assign</button></a></td>";
                             echo "</tr>";
                         }
                         echo "</table>";

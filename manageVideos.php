@@ -7,12 +7,14 @@
     <body>
         <a href="./facultyHome.php">HOME</a>
         <form action="./facultyHelper.php" method="post">
+            <div class="form-group">
             <input type="hidden" name="videoId" placeholder="Video Id" value=<?php if(isset($_GET['id'])){echo $_GET['id'];}else{echo "";}?> >
-            <input type="text" name="videoName" placeholder="Video Name" value=<?php if(isset($_GET['name'])){echo $_GET['name'];}else{echo "";}?> >
-            <input type="text" name="videoLink" placeholder="Video Link" value=<?php if(isset($_GET['link'])){echo $_GET['link'];}else{echo "";}?> >
+            <input type="text" class="form-control" name="videoName" placeholder="Video Name" value=<?php if(isset($_GET['name'])){echo $_GET['name'];}else{echo "";}?> >
+            <input type="text" class="form-control" name="videoLink" placeholder="Video Link" value=<?php if(isset($_GET['link'])){echo $_GET['link'];}else{echo "";}?> >
             <input type="hidden" name="courseId" value=<?php if(isset($_GET['cid'])){echo $_GET['cid'];}else{echo "";}?> />
             <input type="hidden" name="sequence" placeholder="Sequence" value=<?php if(isset($_GET['sequence'])){echo $_GET['sequence'];}else{echo "";}?> >
-            <input type = "submit" name = <?php if(isset($_GET['name'])){echo "updateVideo";}else{echo "addVideo";} ?> value = <?php if(isset($_GET['name'])){echo "Update Video";}else{echo 'Add Video';} ?> >
+            <input type = "submit" class='btn btn-primary' name = <?php if(isset($_GET['name'])){echo "updateVideo";}else{echo "addVideo";} ?> value = <?php if(isset($_GET['name'])){echo "Update_Video";}else{echo 'Add_Video';} ?> >
+</div>
         </form>
         <?php 
             require_once './settings/connection.php';
@@ -20,14 +22,16 @@
             $sql = "SELECT * FROM videoDetails WHERE status = 1 AND courseId = ".$_GET['cid'];
             $result = $conn->query($sql);
             if($result->num_rows > 0){
-                echo "<table border=1>";
-                echo "<tr>";
+                echo "<table class='table'>";
+                echo "<thead class='thead-dark'>";
+                echo "<tr align='center'>";
                         echo "<td>videoId</td>";
                         echo "<td>Title</td>";
                         echo "<td>Link</td>";
                         echo "<td>Course Id</td>";
                         echo "<td>Sequence</td>";
                         echo "<td>Operations</td>";
+                echo "</thead>";
                 echo "</tr>";
                 while($row = $result->fetch_assoc()){
                     $id = $row['videoId'];
@@ -36,13 +40,13 @@
                     $cid = $row['courseId'];
                     $sequence = $row['sequence'];
                     
-                    echo "<tr>";
+                    echo "<tr align='center'>";
                         echo "<td>$id</td>";
                         echo "<td>$title</td>";
                         echo "<td>$link</td>";
                         echo "<td>$cid</td>";
                         echo "<td>$sequence</td>";
-                        echo "<td><a href='./manageVideos.php?id=$id&name=$title&link=$link&cid=$cid&sequence=$sequence'><button>Update</button></a><a href='facultyHelper.php?id=$id&cid=$cid&delVideo=1'><button>Delete</button></a><a href='./manageQuiz.php?vidId=$id'><button>Manage Quiz</button></a></td>";
+                        echo "<td><a href='./manageVideos.php?id=$id&name=$title&link=$link&cid=$cid&sequence=$sequence'><button class='btn btn-info'>Update</button></a> <a href='facultyHelper.php?id=$id&cid=$cid&delVideo=1'><button class='btn btn-danger'>Delete</button></a> <a href='./manageQuiz.php?vidId=$id'><button class='btn btn-warning'>Manage Quiz</button></a></td>";
                     echo "</tr>";
                 }
                 echo "</table>";

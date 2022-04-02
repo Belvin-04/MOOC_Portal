@@ -20,20 +20,20 @@
                     if($result->num_rows > 0){
                         echo "<table class='table'>";
                             echo "<thead class='thead-dark'>";
-                            echo "<tr>";
-                                echo "<td colspan=3 align='center'><b>Pending Courses</b></td>";
+                            echo "<tr align='center'>";
+                                echo "<td colspan=3><b>Pending Courses</b></td>";
                             echo "</tr>";
-                            echo "<tr>";
+                            echo "<tr align='center'>";
                                 echo "<th>Course Name</th>";
                                 echo "<th>Course Id</th>";
-                                echo "<th>Operations</th>";
+                                echo "<th></th>";
                             echo "</tr>";
                             echo "</thead>";
                             echo "<tbody>";
                         while($row = $result->fetch_assoc()){
                             $courseName = $row['cName'];
                             $courseId = $row['cId'];
-                            echo "<tr>";
+                            echo "<tr align='center'>";
                                 echo "<td>$courseName</td>";
                                 echo "<td>$courseId</td>";
                                 echo "<td><a href='./courseComponents.php?cid=$courseId'><button class='btn btn-primary'>Go to Course</button></a></td>";
@@ -50,22 +50,22 @@
                     if($result->num_rows > 0){
                         echo "<table class='table'>";
                             echo "<thead class='thead-dark'>";
-                            echo "<tr>";
-                                echo "<td colspan=3 align='center'><b>Completed Courses</b></td>";
+                            echo "<tr align='center'>";
+                                echo "<td colspan=2><b>Completed Courses</b></td>";
                             echo "</tr>";
-                            echo "<tr>";
+                            echo "<tr align='center'>";
                                 echo "<th>Course Name</th>";
-                                echo "<th>Course Id</th>";
-                                echo "<th>Operations</th>";
+                                echo "<th>Certificates</th>";
+                                echo "<th></th>";
                             echo "</tr>";
                             echo "</thead>";
                             echo "<tbody>";
                         while($row = $result->fetch_assoc()){
                             $courseName = $row['cName'];
                             $courseId = $row['cId'];
-                            echo "<tr>";
+                            echo "<tr align='center'>";
                                 echo "<td>$courseName</td>";
-                                echo "<td>$courseId</td>";
+                                //echo "<td>$courseId</td>";
                                 echo "<td><a href='./certificate.php?cid=$courseId'><button class='btn btn-primary'>Certificate</button></a></td>";
                             echo "</tr>";
                             
@@ -79,10 +79,10 @@
                     if($result->num_rows > 0){
                         echo "<table class='table'>";
                             echo "<thead class='thead-dark'>";
-                            echo "<tr>";
-                                echo "<td colspan=2 align='center'><b>Courses under review</b></td>";
+                            echo "<tr align='center'>";
+                                echo "<td colspan=2><b>Courses under review</b></td>";
                             echo "</tr>";
-                            echo "<tr>";
+                            echo "<tr align='center'>";
                                 echo "<th>Course Name</th>";
                                 echo "<th>Course Id</th>";
                             echo "</tr>";
@@ -91,7 +91,7 @@
                         while($row = $result->fetch_assoc()){
                             $courseName = $row['cName'];
                             $courseId = $row['cId'];
-                            echo "<tr>";
+                            echo "<tr align='center'>";
                                 echo "<td>$courseName</td>";
                                 echo "<td>$courseId</td>";
                             echo "</tr>";

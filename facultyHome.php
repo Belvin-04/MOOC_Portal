@@ -19,23 +19,25 @@
                     $sql = "SELECT * FROM courseDetails WHERE status = 1 AND facultyId = ".$_SESSION['facultyid'];
                     $result = $conn->query($sql);
                     if($result->num_rows > 0){
-                        echo "<table border=1>";
-                        echo "<tr>";
+                        echo "<table class='table'>";
+                        echo "<thead class='thead-dark'>";
+                        echo "<tr align='center'>";
                                 echo "<td>CourseId</td>";
                                 echo "<td>CourseName</td>";
                                 echo "<td>Minimum Score</td>";
                                 echo "<td>Operations</td>";
                         echo "</tr>";
+                        echo "</thead>";
                         while($row = $result->fetch_assoc()){
                             $cId = $row['courseId'];
                             $cName = $row['courseName'];
                             $cMinScore = $row['minimumScore'];
                             
-                            echo "<tr>";
+                            echo "<tr align='center'>";
                                 echo "<td>$cId</td>";
                                 echo "<td>$cName</td>";
                                 echo "<td>$cMinScore</td>";
-                                echo "<td><a href='./assignCourse.php?cid=$cId'><button>Enroll</button></a><a href='assessment.php?cid=$cId'><button>Assess</button><a/></td>";
+                                echo "<td><a href='./assignCourse.php?cid=$cId'><button class='btn btn-primary'>Enroll</button></a> <a href='assessment.php?cid=$cId'><button class='btn btn-info'>Assess</button><a/></td>";
                             echo "</tr>";
                         }
                         echo "</table>";

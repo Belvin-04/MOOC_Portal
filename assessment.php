@@ -18,10 +18,10 @@
             if($result->num_rows > 0){
                 echo "<table class='table'>";
                     echo "<thead class='thead-dark'>";
-                    echo "<tr>";
-                        echo "<td colspan=4 align='center'><b>Assessment</b></td>";
+                    echo "<tr align='center'>";
+                        echo "<td colspan=4><b>Assessment</b></td>";
                     echo "</tr>";
-                    echo "<tr>";
+                    echo "<tr align='center'>";
                         echo "<th>GR Number</th>";
                         echo "<th>Name</th>";
                         echo "<th>Score</th>";
@@ -37,7 +37,7 @@
                     $score = $row['score']." / ".$row['minScore'];
                     $mail = $row['sMail'];
                     $cName = $row['cName'];
-                    echo "<tr>";
+                    echo "<tr align='center'>";
                         echo "<td>$gr</td>";
                         echo "<td>$name</td>";
                         echo "<td>$score</td>";
