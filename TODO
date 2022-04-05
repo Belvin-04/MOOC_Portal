@@ -25,7 +25,10 @@ DONE
 
 
 TODO
-    Bug in checking answer of quiz
     After watching all the videos a mail should be sent to the faculty
+    After enrollment a mail should be sent to the student.
+    Fix Bug Same time for different video is not being accepted.
+    Generate a pdf report about the course performance
+    
     Give some proper designing
     

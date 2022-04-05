@@ -111,7 +111,7 @@
         $selectedAns = $_POST["selectedAnswer"];
         $realAns = $_POST["realAnswer"];
 
-        if($selectedAns == $realAns){
+        if(strtoupper($selectedAns) == strtoupper($realAns)){
             $cid = $_POST["cId"];
             $sid = $_SESSION["studentid"];
             $quesId = $_POST["quesId"];
