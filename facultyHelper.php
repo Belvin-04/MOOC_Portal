@@ -95,7 +95,8 @@ function addQuiz($ques,$a,$b,$c,$d,$ans,$time,$vId,$conn){
         header("Location: ./manageQuiz.php?vidId=$vId");
     }
     else{
-        echo $conn->error;
+        $err = $conn->error;
+        header("Location: ./manageQuiz.php?vidId=$vId&error=$err");
     }
 }
 
@@ -122,10 +123,11 @@ function deleteQuiz($quesId,$vId,$conn){
 function assignCourse($sId,$cId,$conn){
     $sql = "INSERT INTO enrollmentdetails VALUES($cId,$sId,0,0)";
     if($conn->query($sql)){
-        header("Location: ./assignCourse.php?cid=$cId");
+        header("Location: ./assignCourse.php?cid=$cId&assigned=1");
     }
     else{
-        echo $conn->error;
+        $err = $conn->error;
+        header("Location: ./assignCourse.php?cid=$cId&error=$err");
     }
     
 }

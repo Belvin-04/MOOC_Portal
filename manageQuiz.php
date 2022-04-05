@@ -111,6 +111,10 @@
                 }
                 echo "</table>";
             }
+            if(isset($_GET["error"])){
+                $err = $_GET["error"];
+                echo "<script>alert('Error in adding quiz...');</script>";
+            }
         ?>
     </body>
 </html>

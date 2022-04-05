@@ -41,6 +41,12 @@
                         }
                         echo "</table>";
                     }
+                    if(isset($_GET["assigned"])){
+                        echo "<script>alert('Course Assigned Successfully...');</script>";
+                    }
+                    if(isset($_GET["error"])){
+                        echo "<script>alert('Student has completed the course...');</script>";
+                    }
         ?>
     </body>
 </html>
