@@ -174,6 +174,24 @@ function completeCourse($sId,$cId,$stdName,$mail,$cName,$conn){
     }
 }
 
+function unAssignCourse($sId,$cId,$name,$mail,$conn){
+    $cNameQuery = "SELECT courseName FROM courseDetails WHERE courseId = $cId";
+    $result = $conn->query($cNameQuery);
+    $row = $result->fetch_assoc();
+    $cName = $row["courseName"];
+    $subject="Course Un-Assigned";
+    $body="This mail is to inform you that you have been unassigned from the course $cName.";
+    $sql = "DELETE FROM enrollmentdetails WHERE courseId = $cId AND studentId = $sId";
+    if($conn->query($sql)){
+        sendMail($mail,$name,$subject,$body);
+        header("Location: ./assignCourse.php?cid=$cId&unassigned=1");
+    }
+    else{
+        $err = $conn->error;
+        header("Location: ./assignCourse.php?cid=$cId&error=$err");
+    }
+}
+
 function sendMail($receiverMail,$receiverName,$subject,$body){
     // passing true in constructor enables exceptions in PHPMailer
     $mail = new PHPMailer(true);
@@ -308,7 +326,9 @@ else if(isset($_GET['complete'])){
 else if(isset($_GET["unassign"])){
     $sId = $_GET['sId'];
     $cId = $_GET['cId'];
-    assignCourse($sId,$cId,$GLOBALS['conn']);
+    $mail = $_GET['sEmail'];
+    $name = $_GET['sName'];
+    unAssignCourse($sId,$cId,$name,$mail,$GLOBALS['conn']);
 }
 
 ?>

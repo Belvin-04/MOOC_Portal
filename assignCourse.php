@@ -11,7 +11,12 @@
             session_start();
             require_once './settings/connection.php';
             $conn = $GLOBALS['conn'];
-
+            $enrolledSql = "SELECT studentId FROM enrollmentdetails WHERE courseId = ".$_GET['cid'];
+            $enrolledIds = array();
+            $result = $conn->query($enrolledSql);
+            while($row = $result->fetch_assoc()){
+                array_unshift($enrolledIds,$row["studentId"]);
+            }
             $sql = "SELECT * FROM studentDetails ORDER BY studentGR";
                     $result = $conn->query($sql);
                     if($result->num_rows > 0){
@@ -36,7 +41,13 @@
                                 echo "<td>$sName</td>";
                                 echo "<td>$gr</td>";
                                 //echo "<td>$sEmail</td>";
-                                echo "<td><a href='./facultyHelper.php?sId=$sId&cId=$cId&sEmail=$sEmail&sName=$sName&assign=1'><button class='btn btn-primary'>Assign</button></a> <a href='./facultyHelper.php'><button class='btn btn-warning'>Un-Assign</button></a></td>";
+                                if(in_array($sId,$enrolledIds)){
+                                    echo "<td><a href='./facultyHelper.php?sId=$sId&cId=$cId&sEmail=$sEmail&sName=$sName&unassign=1'><button class='btn btn-warning'>Un-Assign</button></a></td>";
+                                }
+                                else{
+                                    echo "<td><a href='./facultyHelper.php?sId=$sId&cId=$cId&sEmail=$sEmail&sName=$sName&assign=1'><button class='btn btn-primary'>Assign</button></a></td>";
+                                }
+                                
                             echo "</tr>";
                         }
                         echo "</table>";
@@ -46,6 +57,9 @@
                     }
                     if(isset($_GET["error"])){
                         echo "<script>alert('Student has completed the course...');</script>";
+                    }
+                    if(isset($_GET["unassigned"])){
+                        echo "<script>alert('Course Unassigned Successfully...');</script>";
                     }
         ?>
     </body>
