@@ -25,11 +25,15 @@ DONE
 
     Give alert message on course enrollment
     Fix Bug Same time for different video is not being accepted.
+
+    After enrollment a mail should be sent to the student.
     
 TODO
     After watching all the videos a mail should be sent to the faculty
-    After enrollment a mail should be sent to the student.
     
+    
+    Bug in reassigning the course
+    Implement the unassign functionality
     Generate a pdf report about the course performance
     
     

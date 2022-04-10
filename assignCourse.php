@@ -21,7 +21,7 @@
                                 echo "<th>StudentId</th>";
                                 echo "<th>Student Name</th>";
                                 echo "<th>Student GR</th>";
-                                echo "<th>Student Email</th>";
+                                //echo "<th>Student Email</th>";
                                 echo "<th>Operations</th>";
                         echo "</tr>";
                         echo "</thead>";
@@ -35,8 +35,8 @@
                                 echo "<td>$sId</td>";
                                 echo "<td>$sName</td>";
                                 echo "<td>$gr</td>";
-                                echo "<td>$sEmail</td>";
-                                echo "<td><a href='./facultyHelper.php?sId=$sId&cId=$cId&assign=1'><button class='btn btn-primary'>Assign</button></a> <a href='./facultyHelper.php'><button class='btn btn-warning'>Un-Assign</button></a></td>";
+                                //echo "<td>$sEmail</td>";
+                                echo "<td><a href='./facultyHelper.php?sId=$sId&cId=$cId&sEmail=$sEmail&sName=$sName&assign=1'><button class='btn btn-primary'>Assign</button></a> <a href='./facultyHelper.php'><button class='btn btn-warning'>Un-Assign</button></a></td>";
                             echo "</tr>";
                         }
                         echo "</table>";

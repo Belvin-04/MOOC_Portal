@@ -120,9 +120,16 @@ function deleteQuiz($quesId,$vId,$conn){
     }
 }
 
-function assignCourse($sId,$cId,$conn){
+function assignCourse($sId,$cId,$name,$mail,$conn){
+    $cNameQuery = "SELECT courseName FROM courseDetails WHERE courseId = $cId";
+    $result = $conn->query($cNameQuery);
+    $row = $result->fetch_assoc();
+    $cName = $row["courseName"];
+    $subject="Course Assigned";
+    $body="This mail is to inform you that you have been assigned the course $cName which you have to complete.";
     $sql = "INSERT INTO enrollmentdetails VALUES($cId,$sId,0,0)";
     if($conn->query($sql)){
+        sendMail($mail,$name,$subject,$body);
         header("Location: ./assignCourse.php?cid=$cId&assigned=1");
     }
     else{
@@ -136,6 +143,15 @@ function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
     $subject = "Course Re-Assigned";
     $body = "This mail is to inform you that you have not properly completed the course $cName. Hence the course has been reassigned to you.";
     $sql = "UPDATE enrollmentdetails SET completed = 0 WHERE courseId = $cId AND studentId = $sId";
+
+    $getVideoList = "SELECT videoId FROM videoDetails WHERE courseId = $cId";
+
+    if($conn->query($getVideoList)){
+        
+    }
+
+    $deleteWatchedVideos = "DELETE FROM watchedVideos WHERE videoId ";
+    $deleteAttemptedQuiz = "";
     if($conn->query($sql)){
         sendMail($mail,$stdName,$subject,$body);
         header("Location: ./assessment.php?cid=$cId");
@@ -267,7 +283,9 @@ else if(isset($_GET['delQuiz'])){
 else if(isset($_GET['assign'])){
     $sId = $_GET['sId'];
     $cId = $_GET['cId'];
-    assignCourse($sId,$cId,$GLOBALS['conn']);
+    $mail = $_GET['sEmail'];
+    $name = $_GET['sName'];
+    assignCourse($sId,$cId,$name,$mail,$GLOBALS['conn']);
 }
 
 else if(isset($_GET['reassign'])){
@@ -285,6 +303,12 @@ else if(isset($_GET['complete'])){
     $sName = $_GET['sName'];
     $cName = $_GET['cName'];
     completeCourse($sId,$cId,$sName,$mail,$cName,$GLOBALS['conn']);
+}
+
+else if(isset($_GET["unassign"])){
+    $sId = $_GET['sId'];
+    $cId = $_GET['cId'];
+    assignCourse($sId,$cId,$GLOBALS['conn']);
 }
 
 ?>
