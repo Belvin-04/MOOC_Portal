@@ -35,7 +35,7 @@
                 echo "</table>";
             }
             else{
-                $sql = "UPDATE enrollmentdetails SET completed = 2 WHERE studentId = ".$_SESSION["studentid"]." AND courseId = ".$_GET["cid"];
+                $sql = "UPDATE enrollmentdetails SET completed = 2 ,dateCompleted = DATE_FORMAT(CURRENT_DATE(),'%d-%m-%Y') WHERE studentId = ".$_SESSION["studentid"]." AND courseId = ".$_GET["cid"];
                 if($conn->query($sql)){
                     
                     header("Location: ./studentHome.php");

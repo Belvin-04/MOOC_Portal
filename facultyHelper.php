@@ -9,6 +9,8 @@ require_once './include/' . 'Exception.php';
 require_once './include/' . 'PHPMailer.php';
 require_once './include/' . 'SMTP.php';
 require_once './settings/mailCredentials.php';
+require "vendor/autoload.php";
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 function addCourse($cName,$minScore,$facultyId,$conn){
     $sql = "INSERT INTO courseDetails(courseName,minimumScore,facultyId,status) VALUES('$cName',$minScore,$facultyId,1)";
@@ -127,7 +129,7 @@ function assignCourse($sId,$cId,$name,$mail,$conn){
     $cName = $row["courseName"];
     $subject="Course Assigned";
     $body="This mail is to inform you that you have been assigned the course $cName which you have to complete.";
-    $sql = "INSERT INTO enrollmentdetails VALUES($cId,$sId,0,0)";
+    $sql = "INSERT INTO enrollmentdetails VALUES($cId,$sId,0,0,NULL)";
     if($conn->query($sql)){
         sendMail($mail,$name,$subject,$body);
         header("Location: ./assignCourse.php?cid=$cId&assigned=1");
@@ -142,7 +144,7 @@ function assignCourse($sId,$cId,$name,$mail,$conn){
 function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
     $subject = "Course Re-Assigned";
     $body = "This mail is to inform you that you have not properly completed the course $cName. Hence the course has been reassigned to you.";
-    $sql = "UPDATE enrollmentdetails SET completed = 0 WHERE courseId = $cId AND studentId = $sId";
+    $sql = "UPDATE enrollmentdetails SET completed = 0 , score = 0 WHERE courseId = $cId AND studentId = $sId";
 
     $getVideoList = "SELECT videoId FROM videoDetails WHERE courseId = $cId";
 
@@ -150,9 +152,9 @@ function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
         
     }
 
-    $deleteWatchedVideos = "DELETE FROM watchedVideos WHERE videoId ";
-    $deleteAttemptedQuiz = "";
-    if($conn->query($sql)){
+    $deleteWatchedVideos = "DELETE FROM watchedVideos WHERE videoId IN ( SELECT videoId FROM watchedVideos w NATURAL JOIN videoDetails v WHERE v.courseId = $cId ) AND studentId = $sId";
+    $deleteAttemptedQuiz = "DELETE FROM attemptedquizs WHERE courseId = $cId AND studentId = $sId";
+    if($conn->query($sql) && $conn->query($deleteWatchedVideos) && $conn->query($deleteAttemptedQuiz)){
         sendMail($mail,$stdName,$subject,$body);
         header("Location: ./assessment.php?cid=$cId");
     }
@@ -233,6 +235,39 @@ function sendMail($receiverMail,$receiverName,$subject,$body){
     catch (Exception $e) {
         echo "Error in sending email. Mailer Error: {$mail->ErrorInfo}";
     }
+}
+
+function addQuestionsFromFile($filename){
+    $reader = \PhpOffice\PhpSpreadsheet\IOFactory::createReader('Xlsx');
+    $reader->setReadDataOnly(TRUE);
+    $spreadsheet = $reader->load($filename);
+
+    $worksheet = $spreadsheet->getActiveSheet();
+    // Get the highest row number and column letter referenced in the worksheet
+    $highestRow = $worksheet->getHighestRow(); // e.g. 10
+   
+
+    for ($row = 2; $row <= $highestRow; ++$row) {
+        $ques = $worksheet->getCell('A' . $row)->getValue();
+        $a = $worksheet->getCell('B' . $row)->getValue();
+        $b = $worksheet->getCell('C' . $row)->getValue();
+        $c = $worksheet->getCell('D' . $row)->getValue();
+        $d = $worksheet->getCell('E' . $row)->getValue();
+        $ans = $worksheet->getCell('F' . $row)->getValue();
+        $time = $worksheet->getCell('G' . $row)->getValue();
+        $vId = $_GET["vidId"];
+        $conn = $GLOBALS["conn"];
+        $sql = "INSERT INTO quizdetails(question,optionA,optionB,optionC,optionD,answer,time,videoId,status) VALUES('$ques','$a','$b','$c','$d','$ans',$time,$vId,1)";
+        if($conn->query($sql)){
+            continue;
+        }
+        else{
+            echo $conn->error;
+            exit(0);
+        }
+    }
+    header("Location: ./manageQuiz.php?vidId=$vId");
+    
 }
 
 if(isset($_POST['addCourse'])){
@@ -329,6 +364,18 @@ else if(isset($_GET["unassign"])){
     $mail = $_GET['sEmail'];
     $name = $_GET['sName'];
     unAssignCourse($sId,$cId,$name,$mail,$GLOBALS['conn']);
+}
+
+else if(isset($_POST["submitFile"])){
+    $target_dir = "../../uploads/";
+    $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+    $uploadOk = 1;  
+
+    if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+        addQuestionsFromFile($target_file);    
+      } else {
+        echo "Sorry, there was an error uploading your file.";
+      }
 }
 
 ?>

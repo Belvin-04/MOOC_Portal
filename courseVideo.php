@@ -37,9 +37,16 @@ if($result->num_rows > 0){
     <input type="hidden" value=<?php echo $_GET['videoLinkId']; ?> id="videoLink" />
     <input type="hidden" value=<?php echo $_GET['vId']; ?> id="vid" />
     <!-- 1. The <iframe> (and video player) will replace this <div> tag. -->
-    <div id="player"></div>
+    <center>
+    <button class="btn btn-primary" onclick="setPlayerSize('640','360')">Minimum Size</button>
+      <button class="btn btn-primary" onclick="setPlayerSize('854','480')">Medium Size</button>
+      <button class="btn btn-primary" onclick="setPlayerSize('1024','720')">Maximum Size</button>
+      <div id="player"></div>
+      
+    </center>
 
     <script>
+      
       $(document).ready(function(){
         $("#quizTable").hide();
       });
@@ -61,12 +68,13 @@ if($result->num_rows > 0){
       var link = document.getElementById("videoLink").value;
       function onYouTubeIframeAPIReady() {
         player = new YT.Player('player', {
-          height: '390',
+          height: '360',
           width: '640',
           videoId: link,
           playerVars: {
             'playsinline': 1,
-            controls : 0
+            controls : 0,
+            disablekb:0
           },
           events: {
             'onReady': onPlayerReady,
@@ -74,7 +82,9 @@ if($result->num_rows > 0){
           }
         });
       }
-
+      function setPlayerSize(w,h){
+       player.setSize(parseInt(w),parseInt(h)); 
+      }
       // 4. The API will call this function when the video player is ready.
       function onPlayerReady(event) {
         event.target.playVideo();

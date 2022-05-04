@@ -1,2 +1,5 @@
 Google_PHP_SDK/
 include/
+html_pdf/
+dompdf
+vendor

@@ -1,3 +1,16 @@
+TODO
+    
+    Automatic reassign and keep record of number of times the course has been reassigned and quiz given
+    Universal minimum cut off percentage control
+    Course and course videos can be imported from excel file
+
+    Log of screen minimization and switch to different screen while watching video
+    Show Different questions to different users at the same time of the video
+    Not all questions but random 5 to 7 questions should be displayed in the video
+
+    Give some proper designing
+
+
 DONE
     Google Auth
     Add Course
@@ -29,14 +42,12 @@ DONE
     After enrollment a mail should be sent to the student.
     Implement the unassign functionality
 
-TODO
-    After watching all the videos a mail should be sent to the faculty
-    
-    
+    Date of completion is shown in certificate
+    Converted the date to DD-MM-YYYY format
+    Quiz Questions can be imported from excel file
+
     Bug in reassigning the course
-    
-    Generate a pdf report about the course performance
-    
-    
-    Give some proper designing
+    Changable screen size for the video player
+    Certificate pdf
+
     
