@@ -1,6 +1,4 @@
 TODO
-
-    Changing cutoff should update the minimum score of all courses.
     
     Automatic reassign
     Keep record of number of times the course has been reassigned and quiz given
@@ -54,5 +52,5 @@ DONE
     Certificate pdf
 
     Universal minimum cut off percentage control
-
+    Changing cutoff should update the minimum score of all courses.
     

@@ -280,7 +280,14 @@ function addQuestionsFromFile($filename){
 function setCutOff($fId,$marks,$conn){
     $sql = "UPDATE facultyDetails SET cutOff = $marks WHERE facultyId = $fId";
     if($conn->query($sql)){
-        echo "Set";
+        $minScore = ($marks/100);
+        $sql1 = "UPDATE courseDetails SET minimumScore = score*$minScore WHERE facultyId = $fId";
+        if($conn->query($sql1)){
+            echo "Set";
+        }
+        else{
+            echo $conn->error;    
+        }
     }
     else{
         echo $conn->error;
