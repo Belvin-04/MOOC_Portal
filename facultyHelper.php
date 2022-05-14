@@ -12,8 +12,12 @@ require_once './settings/mailCredentials.php';
 require "vendor/autoload.php";
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-function addCourse($cName,$minScore,$facultyId,$conn){
-    $sql = "INSERT INTO courseDetails(courseName,minimumScore,facultyId,status) VALUES('$cName',$minScore,$facultyId,1)";
+function addCourse($cName,$score,$facultyId,$conn){
+    $cutOffSql = "SELECT cutOff FROM facultyDetails WHERE facultyId = $facultyId";
+    $result = $conn->query($cutOffSql);
+    $row = $result->fetch_assoc();
+    $minScore = ($row["cutOff"]/100)*$score;
+    $sql = "INSERT INTO courseDetails(courseName,score,minimumScore,facultyId,status) VALUES('$cName',$score,$minScore,$facultyId,1)";
     if($conn->query($sql)){
         header('Location: ./manageCourse.php');
     }
@@ -22,8 +26,12 @@ function addCourse($cName,$minScore,$facultyId,$conn){
     }
 }
 
-function updateCourse($cId,$cName,$minScore,$facultyId,$conn){
-    $sql = "UPDATE courseDetails SET courseName = '$cName',minimumScore = $minScore,facultyId = $facultyId WHERE courseId = ".$cId;
+function updateCourse($cId,$cName,$score,$facultyId,$conn){
+    $cutOffSql = "SELECT cutOff FROM facultyDetails WHERE facultyId = $facultyId";
+    $result = $conn->query($cutOffSql);
+    $row = $result->fetch_assoc();
+    $minScore = ($row["cutOff"]/100)*$score;
+    $sql = "UPDATE courseDetails SET courseName = '$cName',score = $score,minimumScore = $minScore,facultyId = $facultyId WHERE courseId = ".$cId;
     if($conn->query($sql)){
         header('Location: ./manageCourse.php');
     }
@@ -269,17 +277,26 @@ function addQuestionsFromFile($filename){
     header("Location: ./manageQuiz.php?vidId=$vId");
     
 }
+function setCutOff($fId,$marks,$conn){
+    $sql = "UPDATE facultyDetails SET cutOff = $marks WHERE facultyId = $fId";
+    if($conn->query($sql)){
+        echo "Set";
+    }
+    else{
+        echo $conn->error;
+    }
+}
 
 if(isset($_POST['addCourse'])){
     $cname = $_POST['cName'];
-    $minScore = $_POST['minScore'];
-    addCourse($cname,$minScore,$_SESSION['facultyid'],$GLOBALS['conn']);
+    $score = $_POST['score'];
+    addCourse($cname,$score,$_SESSION['facultyid'],$GLOBALS['conn']);
 }
 else if(isset($_POST['updateCourse'])){
     $cname = $_POST['cName'];
-    $minScore = $_POST['minScore'];
+    $score = $_POST['score'];
     $cId = $_POST['cid'];
-    updateCourse($cId,$cname,$minScore,$_SESSION['facultyid'],$GLOBALS['conn']);
+    updateCourse($cId,$cname,$score,$_SESSION['facultyid'],$GLOBALS['conn']);
 }
 else if(isset($_GET['op'])){
     deleteCourse($_GET['id'],$GLOBALS['conn']);
@@ -376,6 +393,10 @@ else if(isset($_POST["submitFile"])){
       } else {
         echo "Sorry, there was an error uploading your file.";
       }
+}
+else if(isset($_POST["marks"])){
+    $marks = $_POST["marks"];
+    setCutOff($_SESSION["facultyid"],$marks,$GLOBALS["conn"]);
 }
 
 ?>

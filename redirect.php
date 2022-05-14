@@ -55,8 +55,8 @@ if (isset($_GET['code'])) {
       $stmt->execute();
       $result = $stmt->get_result();
       if($result->num_rows <= 0){
-        $stmt = $conn->prepare("INSERT INTO facultydetails (facultyName,facultyEmail) VALUES (?,?)");
-        $stmt->bind_param("ss",$name,$email);
+        $stmt = $conn->prepare("INSERT INTO facultydetails (facultyName,facultyEmail,cutOff) VALUES (?,?,?)");
+        $stmt->bind_param("ssi",$name,$email,0);
         $stmt->execute();
       }
       setFacultySession($email,$conn);
@@ -68,8 +68,8 @@ if (isset($_GET['code'])) {
       $stmt->execute();
       $result = $stmt->get_result();
       if($result->num_rows <= 0){
-        $stmt = $conn->prepare("INSERT INTO facultydetails (facultyName,facultyEmail) VALUES (?,?)");
-        $stmt->bind_param("ss",$name,$email);
+        $stmt = $conn->prepare("INSERT INTO facultydetails (facultyName,facultyEmail,cutOff) VALUES (?,?,?)");
+        $stmt->bind_param("ssi",$name,$email,0);
         $stmt->execute();
       }
       setFacultySession($email,$conn);

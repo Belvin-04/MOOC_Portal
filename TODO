@@ -1,7 +1,10 @@
 TODO
+
+    Changing cutoff should update the minimum score of all courses.
     
-    Automatic reassign and keep record of number of times the course has been reassigned and quiz given
-    Universal minimum cut off percentage control
+    Automatic reassign
+    Keep record of number of times the course has been reassigned and quiz given
+    
     Course and course videos can be imported from excel file
 
     Log of screen minimization and switch to different screen while watching video
@@ -49,5 +52,7 @@ DONE
     Bug in reassigning the course
     Changable screen size for the video player
     Certificate pdf
+
+    Universal minimum cut off percentage control
 
     
