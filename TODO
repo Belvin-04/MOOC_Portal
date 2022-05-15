@@ -1,14 +1,17 @@
 TODO
-    
-    Keep record of number of times the course has been reassigned and quiz given
+
+    If a video has no quiz then video is not playing
     
     Course and course videos can be imported from excel file
 
-    Log of screen minimization and switch to different screen while watching video
+    Log of screen minimization and switch to different screen while watching video and giving quiz
     Show Different questions to different users at the same time of the video
     Not all questions but random 5 to 7 questions should be displayed in the video
 
+    verify certificate
+
     Give some proper designing
+    Manage login session on each page
 
 
 DONE
@@ -53,3 +56,4 @@ DONE
     Universal minimum cut off percentage control
     Changing cutoff should update the minimum score of all courses.
     Automatic reassign
+    Keep record of number of times the course has been reassigned

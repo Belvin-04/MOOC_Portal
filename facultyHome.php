@@ -85,7 +85,7 @@
                                 echo "<td>$cId</td>";
                                 echo "<td>$cName</td>";
                                 echo "<td>$cMinScore</td>";
-                                echo "<td><a href='./assignCourse.php?cid=$cId'><button class='btn btn-primary'>Enroll</button></a> <a href='assessment.php?cid=$cId'><button class='btn btn-info'>Assess</button><a/></td>";
+                                echo "<td><a href='./assignCourse.php?cid=$cId'><button class='btn btn-primary'>Enroll</button></a> <a href='enrolledStudents.php?cid=$cId'><button class='btn btn-info'>Enrolled Students</button><a/></td>";
                             echo "</tr>";
                         }
                         echo "</table>";

@@ -138,7 +138,8 @@ function assignCourse($sId,$cId,$name,$mail,$conn){
     $subject="Course Assigned";
     $body="This mail is to inform you that you have been assigned the course $cName which you have to complete.";
     $sql = "INSERT INTO enrollmentdetails VALUES($cId,$sId,0,0,NULL)";
-    if($conn->query($sql)){
+    $sql1 = "INSERT INTO reportDetails(studentId,courseId,status,timestamp) VALUES($sId,$cId,'Assigned',NOW())";
+    if($conn->query($sql) && $conn->query($sql1)){
         sendMail($mail,$name,$subject,$body);
         header("Location: ./assignCourse.php?cid=$cId&assigned=1");
     }
@@ -153,7 +154,7 @@ function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
     $subject = "Course Re-Assigned";
     $body = "This mail is to inform you that you have not properly completed the course $cName. Hence the course has been reassigned to you.";
     $sql = "UPDATE enrollmentdetails SET completed = 0 , score = 0 WHERE courseId = $cId AND studentId = $sId";
-
+    $sql1 = "INSERT INTO reportDetails(studentId,courseId,status,timestamp) VALUES($sId,$cId,'Re-Assigned',NOW())";
     $getVideoList = "SELECT videoId FROM videoDetails WHERE courseId = $cId";
 
     if($conn->query($getVideoList)){
@@ -162,7 +163,7 @@ function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
 
     $deleteWatchedVideos = "DELETE FROM watchedVideos WHERE videoId IN ( SELECT videoId FROM watchedVideos w NATURAL JOIN videoDetails v WHERE v.courseId = $cId ) AND studentId = $sId";
     $deleteAttemptedQuiz = "DELETE FROM attemptedquizs WHERE courseId = $cId AND studentId = $sId";
-    if($conn->query($sql) && $conn->query($deleteWatchedVideos) && $conn->query($deleteAttemptedQuiz)){
+    if($conn->query($sql) && $conn->query($deleteWatchedVideos) && $conn->query($deleteAttemptedQuiz) && $conn->query($sql1)){
         sendMail($mail,$stdName,$subject,$body);
         header("Location: ./studentHome.php");
     }
@@ -174,8 +175,9 @@ function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
 function completeCourse($sId,$cId,$stdName,$mail,$cName,$conn){
     $subject = "Course Completed";
     $body = "This mail is to inform you that you have successfully completed the course $cName. You can see the certificate by going to your homepage and clicking on the certificate button next to the course.";
-    $sql = "UPDATE enrollmentdetails SET completed = 1 WHERE courseId = $cId AND studentId = $sId";
-    if($conn->query($sql)){
+    $sql = "UPDATE enrollmentdetails SET completed = 1 , dateCompleted = DATE_FORMAT(CURRENT_DATE(),'%d-%m-%Y') WHERE courseId = $cId AND studentId = $sId";
+    $sql1 = "INSERT INTO reportDetails(studentId,courseId,status,timestamp) VALUES($sId,$cId,'Completed',NOW())";
+    if($conn->query($sql) && $conn->query($sql1)){
         sendMail($mail,$stdName,$subject,$body);
         header("Location: ./studentHome.php");
     }
@@ -192,7 +194,8 @@ function unAssignCourse($sId,$cId,$name,$mail,$conn){
     $subject="Course Un-Assigned";
     $body="This mail is to inform you that you have been unassigned from the course $cName.";
     $sql = "DELETE FROM enrollmentdetails WHERE courseId = $cId AND studentId = $sId";
-    if($conn->query($sql)){
+    $sql1 = "DELETE FROM reportDetails WHERE studentId = $sId AND coursed = $cId";
+    if($conn->query($sql) && $conn->query($sql1)){
         sendMail($mail,$name,$subject,$body);
         header("Location: ./assignCourse.php?cid=$cId&unassigned=1");
     }
