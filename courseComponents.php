@@ -35,13 +35,25 @@
                 echo "</table>";
             }
             else{
-                $sql = "UPDATE enrollmentdetails SET completed = 2 ,dateCompleted = DATE_FORMAT(CURRENT_DATE(),'%d-%m-%Y') WHERE studentId = ".$_SESSION["studentid"]." AND courseId = ".$_GET["cid"];
-                if($conn->query($sql)){
-                    
-                    header("Location: ./studentHome.php");
+                $sql = "SELECT * FROM `enrollmentdetails` ed,`coursedetails` cd WHERE (ed.courseId = cd.courseId) AND (ed.score >= cd.minimumScore) AND (ed.studentId=".$_SESSION['studentid']." AND ed.courseId = ".$_GET['cid'].")";
+                $result = $conn->query($sql);
+
+                $studentDetailsQuery = "SELECT cd.courseName as cName,sd.studentName as sName,sd.studentEmail as sMail , sd.studentId as sId,cd.courseId as cId ,sd.studentGR as GR_NO,sd.studentName as Name,cd.minimumScore as minScore,ed.score as score FROM studentdetails sd,coursedetails cd,enrollmentdetails ed WHERE (cd.courseId = ed.courseId) AND (sd.studentId = ed.studentId) AND cd.courseId = ".$_GET['cid'];
+                $result1 = $conn->query($studentDetailsQuery);
+                $row = $result1->fetch_assoc();
+                $cid = $row['cId'];
+                $sid = $row['sId'];
+                $name = $row['Name'];
+                $mail = $row['sMail'];
+                $cName = $row['cName'];
+
+                if($result->num_rows > 0){
+                    //complete
+                    header("Location: ./facultyHelper.php?cid=$cid&sid=$sid&sName=$name&mail=$mail&cName=$cName&complete=1");
                 }
                 else{
-                    echo $conn->error;
+                    //reassign
+                    header("Location: ./facultyHelper.php?cid=$cid&sid=$sid&sName=$name&mail=$mail&cName=$cName&reassign=1");
                 }
             }
         ?>

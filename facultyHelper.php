@@ -164,7 +164,7 @@ function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
     $deleteAttemptedQuiz = "DELETE FROM attemptedquizs WHERE courseId = $cId AND studentId = $sId";
     if($conn->query($sql) && $conn->query($deleteWatchedVideos) && $conn->query($deleteAttemptedQuiz)){
         sendMail($mail,$stdName,$subject,$body);
-        header("Location: ./assessment.php?cid=$cId");
+        header("Location: ./studentHome.php");
     }
     else{
         echo $conn->error;
@@ -177,7 +177,7 @@ function completeCourse($sId,$cId,$stdName,$mail,$cName,$conn){
     $sql = "UPDATE enrollmentdetails SET completed = 1 WHERE courseId = $cId AND studentId = $sId";
     if($conn->query($sql)){
         sendMail($mail,$stdName,$subject,$body);
-        header("Location: ./assessment.php?cid=$cId");
+        header("Location: ./studentHome.php");
     }
     else{
         echo $conn->error;

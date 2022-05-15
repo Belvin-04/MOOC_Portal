@@ -13,7 +13,7 @@
             require_once './settings/connection.php';
             $conn = $GLOBALS['conn'];   
 
-            $sql = "SELECT cd.courseName as cName,sd.studentName as sName,sd.studentEmail as sMail , sd.studentId as sId,cd.courseId as cId ,sd.studentGR as GR_NO,sd.studentName as Name,cd.minimumScore as minScore,ed.score as score FROM studentdetails sd,coursedetails cd,enrollmentdetails ed WHERE ed.completed = 2 AND (cd.courseId = ed.courseId) AND (sd.studentId = ed.studentId) AND cd.courseId = ".$_GET["cid"];
+            $sql = "SELECT cd.courseName as cName,sd.studentName as sName,sd.studentEmail as sMail , sd.studentId as sId,cd.courseId as cId ,sd.studentGR as GR_NO,sd.studentName as Name,cd.minimumScore as minScore,ed.score as score FROM studentdetails sd,coursedetails cd,enrollmentdetails ed WHERE ed.completed = 1 AND (cd.courseId = ed.courseId) AND (sd.studentId = ed.studentId) AND cd.courseId = ".$_GET["cid"];
             $result = $conn->query($sql);
             if($result->num_rows > 0){
                 echo "<table class='table'>";
@@ -41,7 +41,7 @@
                         echo "<td>$gr</td>";
                         echo "<td>$name</td>";
                         echo "<td>$score</td>";
-                        echo "<td><a href='./facultyHelper.php?cid=$cid&sid=$sid&sName=$name&mail=$mail&cName=$cName&reassign=1'><button class='btn btn-warning'>Re-assign</button></a>&nbsp<a href='./facultyHelper.php?cid=$cid&sid=$sid&sName=$name&mail=$mail&cName=$cName&complete=1'><button class='btn btn-success'>Complete</button></a></td>";
+                        echo "<td><a><button class='btn btn-info'>Report</button></a></td>";
                     echo "</tr>";
                     
                 }

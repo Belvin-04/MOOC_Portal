@@ -1,6 +1,5 @@
 TODO
     
-    Automatic reassign
     Keep record of number of times the course has been reassigned and quiz given
     
     Course and course videos can be imported from excel file
@@ -53,4 +52,4 @@ DONE
 
     Universal minimum cut off percentage control
     Changing cutoff should update the minimum score of all courses.
-    
+    Automatic reassign
