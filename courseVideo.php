@@ -30,7 +30,10 @@ if($result->num_rows > 0){
   }
   $quesJson = json_encode($questions);
   $quesTimes = array_reverse($quesTimes);
-  
+}
+else{
+  $questions["temp"] = [];
+  $quesJson = json_encode($questions);
 }
 ?>
     <input type="hidden" value=<?php echo $_GET['cId']; ?> id="cid">
@@ -88,7 +91,7 @@ if($result->num_rows > 0){
       // 4. The API will call this function when the video player is ready.
       function onPlayerReady(event) {
         event.target.playVideo();
-        questions = '<?php if(count($questions) == 1){echo $quesJson;}else{echo $quesJson;}; ?>';
+        questions = '<?php if(count($questions) == 0){echo "";}if(count($questions) == 1){echo $quesJson;}else{echo $quesJson;}; ?>';
         quesTimes = [<?php if(count($questions) == 1){echo implode($quesTimes);}else{echo implode(",",$quesTimes);}; ?>]
         quesObj = JSON.parse(questions);
         

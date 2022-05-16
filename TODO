@@ -1,6 +1,4 @@
 TODO
-
-    If a video has no quiz then video is not playing
     
     Course and course videos can be imported from excel file
 
@@ -57,3 +55,5 @@ DONE
     Changing cutoff should update the minimum score of all courses.
     Automatic reassign
     Keep record of number of times the course has been reassigned
+
+    If a video has no quiz then video is not playing
