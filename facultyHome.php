@@ -34,6 +34,9 @@
         <button style="float:right" type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
             Cut Off Peercentage
         </button>
+        <a href="./verifyCertificate.php"><button style="float:right;margin-right:2px" type="button" class="btn btn-primary">
+            Verify Certificate
+        </button></a>
         <!-- Modal -->
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">

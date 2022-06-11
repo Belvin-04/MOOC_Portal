@@ -137,7 +137,7 @@ function assignCourse($sId,$cId,$name,$mail,$conn){
     $cName = $row["courseName"];
     $subject="Course Assigned";
     $body="This mail is to inform you that you have been assigned the course $cName which you have to complete.";
-    $sql = "INSERT INTO enrollmentdetails VALUES($cId,$sId,0,0,NULL)";
+    $sql = "INSERT INTO enrollmentdetails VALUES($cId,$sId,0,0,NULL,NULL)";
     $sql1 = "INSERT INTO reportDetails(studentId,courseId,status,timestamp) VALUES($sId,$cId,'Assigned',NOW())";
     if($conn->query($sql) && $conn->query($sql1)){
         sendMail($mail,$name,$subject,$body);
@@ -153,7 +153,7 @@ function assignCourse($sId,$cId,$name,$mail,$conn){
 function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
     $subject = "Course Re-Assigned";
     $body = "This mail is to inform you that you have not properly completed the course $cName. Hence the course has been reassigned to you.";
-    $sql = "UPDATE enrollmentdetails SET completed = 0 , score = 0 WHERE courseId = $cId AND studentId = $sId";
+    $sql = "UPDATE enrollmentdetails SET completed = 0 , score = 0,verificationKey = NULL WHERE courseId = $cId AND studentId = $sId";
     $sql1 = "INSERT INTO reportDetails(studentId,courseId,status,timestamp) VALUES($sId,$cId,'Re-Assigned',NOW())";
     $getVideoList = "SELECT videoId FROM videoDetails WHERE courseId = $cId";
 
@@ -173,9 +173,12 @@ function reassignCourse($sId,$cId,$stdName,$mail,$cName,$conn){
 }
 
 function completeCourse($sId,$cId,$stdName,$mail,$cName,$conn){
+    $str = "WHERE userId = $sId AND courseId = $cId";
+    $hashed = hash("sha512",$str);
+    $certificateKey = $hashed[98].$hashed[103].$hashed[62].$hashed[105].$hashed[120].$hashed[70].$hashed[45].$hashed[109].$hashed[67].$hashed[108];
     $subject = "Course Completed";
     $body = "This mail is to inform you that you have successfully completed the course $cName. You can see the certificate by going to your homepage and clicking on the certificate button next to the course.";
-    $sql = "UPDATE enrollmentdetails SET completed = 1 , dateCompleted = DATE_FORMAT(CURRENT_DATE(),'%d-%m-%Y') WHERE courseId = $cId AND studentId = $sId";
+    $sql = "UPDATE enrollmentdetails SET completed = 1 ,verificationKey = '$certificateKey', dateCompleted = DATE_FORMAT(CURRENT_DATE(),'%d-%m-%Y') WHERE courseId = $cId AND studentId = $sId";
     $sql1 = "INSERT INTO reportDetails(studentId,courseId,status,timestamp) VALUES($sId,$cId,'Completed',NOW())";
     if($conn->query($sql) && $conn->query($sql1)){
         sendMail($mail,$stdName,$subject,$body);
@@ -297,6 +300,47 @@ function setCutOff($fId,$marks,$conn){
     }
 }
 
+function findCertificate($key,$conn){
+
+    $sql = "SELECT * FROM enrollmentdetails WHERE verificationKey = '$key'";
+    $result = $conn->query($sql);
+    if($result->num_rows > 0){
+        $row = $result->fetch_assoc();
+        $sId = $row["studentId"];
+        $cId = $row["courseId"];
+
+        $str = "WHERE userId = $sId AND courseId = $cId";
+        $hashed = hash("sha512",$str);
+        $certificateKey = $hashed[98].$hashed[103].$hashed[62].$hashed[105].$hashed[120].$hashed[70].$hashed[45].$hashed[109].$hashed[67].$hashed[108];
+
+        if($certificateKey === $key){
+
+        
+
+        $sql = "SELECT sd.studentName as sName,cd.courseName as cName,ed.dateCompleted as dateCompleted FROM studentDetails sd,courseDetails cd,enrollmentDetails ed WHERE cd.courseId = ".$row["courseId"]." AND ((ed.courseId = cd.courseId) AND (ed.studentId = sd.studentId)) AND sd.studentId = ".$row["studentId"];
+        $result = $conn->query($sql);
+        $row1 = $result->fetch_assoc();
+        $sql = "SELECT facultyName FROM courseDetails cd,facultyDetails fd WHERE (fd.facultyId = cd.facultyId) AND (cd.courseId = ".$row["courseId"].")";
+        $result1 = $conn->query($sql);
+        $row2 = $result1->fetch_assoc();
+
+        $s = $row1["sName"];
+        $c = $row1["cName"];
+        $f = $row2["facultyName"];
+        $d = $row1["dateCompleted"];
+
+        header("Location: ./verifyCertificate.php?s=$s&c=$c&f=$f&d=$d");
+        }
+        else{
+            header("Location: ./verifyCertificate.php?no=1");    
+        }
+    }
+    else{
+        header("Location: ./verifyCertificate.php?no=1");
+    }
+
+}
+
 if(isset($_POST['addCourse'])){
     $cname = $_POST['cName'];
     $score = $_POST['score'];
@@ -407,6 +451,11 @@ else if(isset($_POST["submitFile"])){
 else if(isset($_POST["marks"])){
     $marks = $_POST["marks"];
     setCutOff($_SESSION["facultyid"],$marks,$GLOBALS["conn"]);
+}
+
+else if(isset($_GET["findCertificate"])){
+    $certificateKey = $_POST["certificateKey"];
+    findCertificate($certificateKey,$GLOBALS["conn"]);
 }
 
 ?>

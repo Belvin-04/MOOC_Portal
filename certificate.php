@@ -34,7 +34,7 @@
             $conn = $GLOBALS["conn"];
             session_start();
 
-            $sql = "SELECT sd.studentName as sName,cd.courseName as cName,ed.dateCompleted as dateCompleted FROM studentDetails sd,courseDetails cd,enrollmentDetails ed WHERE cd.courseId = ".$_GET["cid"]." AND ((ed.courseId = cd.courseId) AND (ed.studentId = sd.studentId)) AND sd.studentId = ".$_SESSION["studentid"];
+            $sql = "SELECT sd.studentName as sName,cd.courseName as cName,ed.dateCompleted as dateCompleted,ed.verificationKey as verificationKey FROM studentDetails sd,courseDetails cd,enrollmentDetails ed WHERE cd.courseId = ".$_GET["cid"]." AND ((ed.courseId = cd.courseId) AND (ed.studentId = sd.studentId)) AND sd.studentId = ".$_SESSION["studentid"];
 
             $result = $conn->query($sql);
             $row = $result->fetch_assoc();
@@ -73,7 +73,8 @@
             <div style="margin: 20px;">
             <?php echo "For successfully completing the course <b><span id='courseName'>".$row["cName"]."</span></b>";?><br/><br/>
             <?php echo "Under the Guidance of <b><span id='facultyName'>".$row1["facultyName"]."</span></b>";?><br/><br/>
-            <?php echo "On <b><span id='dateCompleted'>".$row["dateCompleted"]."</span></b>";?>
+            <?php echo "On <b><span id='dateCompleted'>".$row["dateCompleted"]."</span></b>";?><br/>
+            <?php echo "<span style='float:left'><h6>Verification Key : </h6></span><b><span id='verificationKey' style='float:left'><h6>&nbsp".$row["verificationKey"]."</h6></span></b>";?>
             </div>
         </div>
         <a href="./studentHome.php">Home</a>

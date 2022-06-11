@@ -3,3 +3,4 @@ include/
 html_pdf/
 dompdf
 vendor
+api.php

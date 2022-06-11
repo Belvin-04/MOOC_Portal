@@ -6,8 +6,6 @@ TODO
     Show Different questions to different users at the same time of the video
     Not all questions but random 5 to 7 questions should be displayed in the video
 
-    verify certificate
-
     Give some proper designing
     Manage login session on each page
 
@@ -57,3 +55,5 @@ DONE
     Keep record of number of times the course has been reassigned
 
     If a video has no quiz then video is not playing
+
+    verify certificate
